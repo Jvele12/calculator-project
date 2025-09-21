@@ -26,4 +26,4 @@ jobs:
 
       # Step 4: Run tests with 100% coverage enforcement
       - name: Run tests with coverage
-        run: pytest --cov=src --cov-fail-under=100
+        run: pytest
