@@ -1,13 +1,13 @@
 def add(a, b):
     return a + b
 
-def sub(a, b):
+def subtract(a, b):
     return a - b
 
-def mul(a, b):
+def multiply(a, b):
     return a * b
 
-def div(a, b):
+def divide(a, b):
     if b == 0:
         raise ZeroDivisionError("division by zero")
     return a / b
