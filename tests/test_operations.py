@@ -1,5 +1,5 @@
 import pytest
-from src.operations import add, subtract, multiply, divide
+from app.operation.operations import add, subtract, multiply, divide
 
 @pytest.mark.parametrize("a,b,expected", [
     (2, 3, 5),
