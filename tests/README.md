@@ -1,4 +1,4 @@
-# Calculator CLI Project
+# Calculator CLI Project by Jorge Velecela
 
 A simple command-line calculator built in Python.  
 Supports addition, subtraction, multiplication, and division with full test coverage and continuous integration via GitHub Actions.
