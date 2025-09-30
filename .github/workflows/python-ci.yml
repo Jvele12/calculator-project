@@ -1,4 +1,4 @@
-name: Python CI
+name: Python Application
 
 on: [push, pull_request]
 
@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code from your repository
+      # Step 1: Check out the code from repository
       - name: Checkout code
         uses: actions/checkout@v3
 
@@ -26,4 +26,5 @@ jobs:
 
       # Step 4: Run tests with 100% coverage enforcement
       - name: Run tests with coverage
-        run: pytest --cov=src --cov-fail-under=100
+        run: pytest --cov=. --cov-fail-under=100
+

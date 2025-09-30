@@ -15,15 +15,15 @@ class CalculationFactory:
         self.history = []
 
     def create_calculation(self, a, b, operation_name):
-        if operation_name not in ['+', '-', '*', '/']:
-            raise ValueError("Invalid operation")
-
         operations = {
             '+': arithmetic.add,
             '-': arithmetic.subtract,
             '*': arithmetic.multiply,
             '/': arithmetic.divide,
         }
+
+        if operation_name not in operations:
+            raise ValueError("Invalid operation")
 
         try:
             result = operations[operation_name](a, b)
