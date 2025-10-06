@@ -1,8 +1,6 @@
 # Advanced Modular Calculator by Jorge Velecela
 
-A professional-grade command-line calculator built in Python.  
-This version expands upon the previous calculator project by integrating advanced design patterns, persistent data storage using pandas, and full CI/CD automation with GitHub Actions.
-
+An advanced calculator built in Python.  
 ---
 
 ## 🚀 Features
