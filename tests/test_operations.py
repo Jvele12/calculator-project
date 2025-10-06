@@ -1,25 +1,39 @@
 import pytest
-from app.operation.arithmetic import add, subtract, multiply, divide
+from app.operations import Add, Subtract, Multiply, Divide, Power, Root
+from app.operations import OperationStrategy
 
-def test_add():
-    assert add(2, 3) == 5
-    assert add(-1, 1) == 0
-    assert add(0, 0) == 0
+@pytest.mark.parametrize("a, b, expected", [
+    (2, 3, 5),
+    (-1, 1, 0),
+])
+def test_add(a, b, expected):
+    assert Add().execute(a, b) == expected
 
-def test_subtract():
-    assert subtract(5, 3) == 2
-    assert subtract(3, 5) == -2
-    assert subtract(0, 0) == 0
-
-def test_multiply():
-    assert multiply(4, 5) == 20
-    assert multiply(-1, 5) == -5
-    assert multiply(0, 5) == 0
-
-def test_divide():
-    assert divide(10, 2) == 5
-    assert divide(-10, 2) == -5
+@pytest.mark.parametrize("a, b, expected", [
+    (2, 3, 8),
+    (4, 0.5, 2),
+])
+def test_power_and_root(a, b, expected):
+    if b > 1:
+        assert Power().execute(a, b) == expected
+    else:
+        assert Root().execute(a, b) == expected
 
 def test_divide_by_zero():
     with pytest.raises(ZeroDivisionError):
-        divide(5, 0)
+        Divide().execute(5, 0)
+
+def test_operation_strategy_not_implemented():
+    op = OperationStrategy()
+    with pytest.raises(NotImplementedError):
+        op.execute(1, 2)
+
+
+@pytest.mark.parametrize("cls,a,b,expected", [
+    (Add, 1, 1, 2),
+    (Subtract, 5, 2, 3),
+    (Multiply, 3, 4, 12),
+    (Divide, 8, 2, 4),
+])
+def test_all_basic_operations(cls, a, b, expected):
+    assert cls().execute(a, b) == expected

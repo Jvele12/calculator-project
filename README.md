@@ -1,29 +1,36 @@
-# Calculator CLI Project
+# Advanced Modular Calculator by Jorge Velecela
 
-A simple command-line calculator built in Python.  
-Supports addition, subtraction, multiplication, and division with full test coverage and continuous integration via GitHub Actions.
+A professional-grade command-line calculator built in Python.  
+This version expands upon the previous calculator project by integrating advanced design patterns, persistent data storage using pandas, and full CI/CD automation with GitHub Actions.
 
-## Features
-- REPL interface for continuous user interaction
-- Handles invalid inputs and divide-by-zero errors gracefully
-- Fully tested with pytest and 100% coverage
-- CI pipeline that enforces passing tests and coverage
+---
 
-## Setup Instructions
+## 🚀 Features
 
-1. Clone the repository:
-   git clone https://github.com/Jvele12/calculator-ci.git
-   cd calculator-ci
+- **REPL Interface:** Continuous user interaction with commands such as `help`, `history`, `undo`, `redo`, `clear`, `save`, and `load`.
+- **Advanced Operations:** Addition, subtraction, multiplication, division, power, and root.
+- **Design Patterns Implemented:**
+  - Factory Pattern (creates operations dynamically)
+  - Strategy Pattern (interchangeable operation logic)
+  - Observer Pattern (automatic logging and autosave)
+  - Memento Pattern (undo/redo state management)
+  - Facade Pattern (simplified interface through `Calculator` class)
+- **Persistent History:** All calculations are stored and automatically saved/loaded via a CSV file using `pandas`.
+- **Configuration Management:** Uses `.env` file and `python-dotenv` to manage autosave and history file path.
+- **Full Test Coverage:** Verified with `pytest` and `pytest-cov`.
+- **Continuous Integration:** GitHub Actions pipeline automatically runs all tests and enforces 100% coverage.
 
-2. Create a virtual environment with
-    python -m venv .venv
-    .venv\Scripts\activate  
+---
 
-3. Install dependencies 
-    pip install -r requirements.txt
+## 🛠️ Setup Instructions
 
-## Run program 
-    python -m src.main
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Jvele12/calculator-advanced.git
+   cd calculator-advanced
 
-## Pytest
-    use pytest
+python -m venv venv
+venv\Scripts\activate   # Windows
+source venv/Scripts/activate  # Git Bash
+
+pip install -r requirements.txt
