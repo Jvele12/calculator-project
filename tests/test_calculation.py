@@ -1,20 +1,25 @@
 import pytest
-from app.calculator_repl import Calculator
-from app.calculation import CalculationFactory
+from app.calculation import Calculation, CalculationFactory
+from app.operation_factory import OperationFactory
 
-def test_exit_branch(monkeypatch, capsys):
-    inputs = iter(["exit"])
-    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
 
-    from app.calculator_repl import main_repl
-    main_repl()
-    captured = capsys.readouterr()
-    assert "Goodbye" in captured.out
+def test_calculation_creation():
+    calc = Calculation("add", 2, 3, 5)
+    assert calc.operation == "add"
+    assert calc.result == 5
 
-def test_invalid_operation_raises():
+
+def test_calculation_factory_valid():
+    calc = CalculationFactory.create("add", 2, 3)
+    assert isinstance(calc, Calculation)
+    assert calc.result == 5
+
+
+def test_calculation_factory_invalid():
     with pytest.raises(ValueError):
         CalculationFactory.create("nonsense", 1, 2)
 
-def test_divide_by_zero_handled():
-    calc = CalculationFactory.create("/", 10, 0)
-    assert "Error" in str(calc.result)
+
+def test_calculation_factory_divide_by_zero():
+    with pytest.raises(ZeroDivisionError):
+        CalculationFactory.create("divide", 10, 0)
