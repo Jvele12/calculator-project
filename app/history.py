@@ -3,6 +3,7 @@ import pandas as pd
 from app.calculator_config import HISTORY_DIR, AUTO_SAVE
 from app.logger import LoggingObserver
 from datetime import datetime
+from app.logger import LoggingObserver, AutoSaveObserver
 
 class HistoryManager:
     def __init__(self):
@@ -72,3 +73,16 @@ class HistoryManager:
     def clear(self):
         self._history = []
         self.save()
+
+
+class HistoryManager:
+    def __init__(self):
+        self._history = []
+        self._observers = []
+        # existing file-load logic …
+
+        # register observers
+        log_obs = LoggingObserver()
+        auto_obs = AutoSaveObserver(self)
+        self.attach_observer(log_obs)
+        self.attach_observer(auto_obs)
