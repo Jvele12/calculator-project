@@ -44,24 +44,19 @@ Copy code
 ## 🛠️ Installation & Setup
 
 1. **Clone the repository**
- ```bash
+2. 
  git clone https://github.com/Jvele12/calculator-project.git
  cd calculator-project
 Create & activate a virtual environment
 
-bash
-Copy code
 python -m venv venv
 venv\Scripts\activate       # Windows
 Install dependencies
 
-bash
-Copy code
 pip install -r requirements.txt
 Create a .env file:
 
 env
-Copy code
 CALCULATOR_LOG_DIR=logs
 CALCULATOR_HISTORY_DIR=history
 CALCULATOR_MAX_HISTORY_SIZE=100
@@ -69,16 +64,12 @@ CALCULATOR_AUTO_SAVE=true
 CALCULATOR_PRECISION=4
 CALCULATOR_MAX_INPUT_VALUE=100000
 CALCULATOR_DEFAULT_ENCODING=utf-8
+
 ▶️ Usage
 Run the calculator REPL:
 
-bash
-Copy code
 python -m app.calculator
 Example session:
-
-ruby
-Copy code
 Welcome to the Advanced Calculator! Type 'help' for commands.
 
 >> add 5 3
@@ -121,8 +112,7 @@ project_root/
 🧪 Testing
 Run tests with coverage:
 
-bash
-Copy code
+
 pytest --cov=app --cov-report=term-missing
 GitHub Actions will automatically:
 
