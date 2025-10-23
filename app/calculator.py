@@ -4,7 +4,9 @@ from app.calculation import Calculation
 from app.operation_factory import OperationFactory
 from app.input_validators import validate_numbers, validate_operation_name
 from app.exceptions import CalculatorError, ValidationError
+from colorama import Fore, Style, init
 
+init(autoreset=True)
 
 class Calculator:
     def __init__(self):
@@ -29,50 +31,51 @@ class Calculator:
             calc = Calculation(operation_name, a, b, result)
             self.history.add(calc)
 
-            print(f"✅ {operation_name}({a}, {b}) = {result}")
+            print(Fore.GREEN + f"✅ {operation_name}({a}, {b}) = {result}")
             return result
 
         except ValidationError as e:
-            print(f"⚠️ Error performing operation: {e}")
+            print(Fore.YELLOW + f"⚠️ Error performing operation: {e}")
         except ZeroDivisionError:
-            print("❌ Error: Division by zero is not allowed.")
+            print(Fore.RED + "❌ Error: Division by zero is not allowed.")
         except CalculatorError as e:
-            print(f"⚠️ Calculator Error: {e}")
+            print(Fore.YELLOW + f"⚠️ Calculator Error: {e}")
         except Exception as e:
-            print(f"⚠️ Unexpected Error: {e}")
+            print(Fore.RED + f"⚠️ Unexpected Error: {e}")
 
     def undo(self):
         prev_state = self.caretaker.undo()
         if prev_state is not None:
             self.history.restore(prev_state)
-            print("↩️  Undid last operation.")
+            print(Fore.CYAN + "↩️  Undid last operation.")
         else:
-            print("⚠️  Nothing to undo.")
+            print(Fore.YELLOW + "⚠️  Nothing to undo.")
 
     def redo(self):
         next_state = self.caretaker.redo()
         if next_state is not None:
             self.history.restore(next_state)
-            print("↪️  Redid last undone operation.")
+            print(Fore.CYAN + "↪️  Redid last undone operation.")
         else:
-            print("⚠️  Nothing to redo.")
+            print(Fore.YELLOW + "⚠️  Nothing to redo.")
 
 
 def main_repl():
     calc = Calculator()
-    print("Welcome to the Advanced Calculator! Type 'help' for commands, or 'exit' to quit.\n")
+    print(Fore.MAGENTA + Style.BRIGHT + "🧮 Welcome to the Advanced Calculator!")
+    print(Fore.MAGENTA + "Type 'help' for commands, or 'exit' to quit.\n")
 
     while True:
-        user_input = input(">> ").strip().lower()
+        user_input = input(Fore.WHITE + ">> ").strip().lower()
         if not user_input:
             continue
 
         if user_input == "exit":
-            print("👋 Goodbye!")
+            print(Fore.CYAN + "👋 Goodbye! Thanks for using the calculator.")
             break
 
         elif user_input == "help":
-            print("""
+            print(Fore.GREEN + Style.BRIGHT + """
 Available operations:
   add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff
 Commands:
@@ -95,19 +98,19 @@ Usage example:
         try:
             parts = user_input.split()
             if len(parts) != 3:
-                print("⚠️ Invalid format. Use: <operation> <a> <b>")
+                print(Fore.YELLOW + "⚠️ Invalid format. Use: <operation> <a> <b>")
                 continue
 
             operation, a, b = parts
             a, b = float(a), float(b)
             result = calc.perform(operation, a, b)
             if result is not None:
-                print("Result:", result)
+                print(Fore.CYAN + f"Result: {result}")
 
         except ValueError:
-            print("⚠️ Please enter numeric values for operands.")
+            print(Fore.YELLOW + "⚠️ Please enter numeric values for operands.")
         except Exception as e:
-            print("⚠️ Unexpected error:", e)
+            print(Fore.RED + f"⚠️ Unexpected error: {e}")
 
 
 if __name__ == "__main__":
