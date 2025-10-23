@@ -1,9 +1,9 @@
 import os
 import pandas as pd
-from app.calculator_config import HISTORY_DIR, AUTO_SAVE
-from app.logger import LoggingObserver
 from datetime import datetime
+from app.calculator_config import HISTORY_DIR, AUTO_SAVE
 from app.logger import LoggingObserver, AutoSaveObserver
+
 
 class HistoryManager:
     def __init__(self):
@@ -23,13 +23,20 @@ class HistoryManager:
         else:
             self._history = []
 
-        self.attach_observer(LoggingObserver())
+        log_obs = LoggingObserver()
+        auto_obs = AutoSaveObserver(self)
+        self.attach_observer(log_obs)
+        self.attach_observer(auto_obs)
 
     # -----------------------------
     # Observer pattern integration
     # -----------------------------
     def attach_observer(self, observer):
         self._observers.append(observer)
+
+    def detach_observer(self, observer):
+        if observer in self._observers:
+            self._observers.remove(observer)
 
     def notify_observers(self, calculation):
         for observer in self._observers:
@@ -73,16 +80,3 @@ class HistoryManager:
     def clear(self):
         self._history = []
         self.save()
-
-
-class HistoryManager:
-    def __init__(self):
-        self._history = []
-        self._observers = []
-        # existing file-load logic …
-
-        # register observers
-        log_obs = LoggingObserver()
-        auto_obs = AutoSaveObserver(self)
-        self.attach_observer(log_obs)
-        self.attach_observer(auto_obs)

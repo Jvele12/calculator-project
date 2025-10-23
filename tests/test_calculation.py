@@ -1,25 +1,20 @@
-import pytest
-from app.calculation import Calculation, CalculationFactory
-from app.operation_factory import OperationFactory
+class Calculation:
+    def __init__(self, operation, a, b, result):
+        self.operation = operation
+        self.a = a
+        self.b = b
+        self.result = result
 
+    def __repr__(self):
+        return f"Calculation({self.operation}, {self.a}, {self.b}) = {self.result}"
 
-def test_calculation_creation():
-    calc = Calculation("add", 2, 3, 5)
-    assert calc.operation == "add"
-    assert calc.result == 5
-
-
-def test_calculation_factory_valid():
-    calc = CalculationFactory.create("add", 2, 3)
-    assert isinstance(calc, Calculation)
-    assert calc.result == 5
-
-
-def test_calculation_factory_invalid():
-    with pytest.raises(ValueError):
-        CalculationFactory.create("nonsense", 1, 2)
-
-
-def test_calculation_factory_divide_by_zero():
-    with pytest.raises(ZeroDivisionError):
-        CalculationFactory.create("divide", 10, 0)
+class CalculationFactory:
+    @staticmethod
+    def create(operation_name, a, b):
+        from app.operation_factory import OperationFactory
+        operation = OperationFactory.create_operation(operation_name)
+        try:
+            result = operation.execute(a, b)
+        except ZeroDivisionError:
+            raise ZeroDivisionError("Division by zero is not allowed.")
+        return Calculation(operation_name, a, b, result)

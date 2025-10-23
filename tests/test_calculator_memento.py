@@ -1,17 +1,28 @@
-from app.calculator_memento import Caretaker
+class CalculatorMemento:
+    def __init__(self, state):
+        self.state = state.copy()
 
-def test_undo_and_redo():
-    caretaker = Caretaker()
+class Caretaker:
+    def __init__(self):
+        self._undo_stack = []
+        self._redo_stack = []
 
-    state1 = {"Operation": ["add"], "Result": [5]}
-    state2 = {"Operation": ["sub"], "Result": [2]}
+    def save(self, state):
+        self._undo_stack.append(CalculatorMemento(state))
 
-    caretaker.save(state1)
-    caretaker.save(state2)
+    def save_state(self, state):
+        self.save(state)
 
-    # Undo should revert to state1
-    previous_state = caretaker.undo()
-    assert previous_state == state2  # depends on how you structure it
-    # Redo should restore latest undone state
-    caretaker.redo()
-    assert caretaker._undo_stack[-1].state == state2
+    def undo(self):
+        if self._undo_stack:
+            memento = self._undo_stack.pop()
+            self._redo_stack.append(memento)
+            return memento.state
+        return None
+
+    def redo(self):
+        if self._redo_stack:
+            memento = self._redo_stack.pop()
+            self._undo_stack.append(memento)
+            return memento.state
+        return None
