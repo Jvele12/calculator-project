@@ -2,6 +2,8 @@ from app.history import HistoryManager
 from app.calculator_memento import Caretaker
 from app.calculation import Calculation
 from app.operation_factory import OperationFactory
+from app.input_validators import validate_numbers, validate_operation_name
+from app.exceptions import CalculatorError, ValidationError
 
 
 class Calculator:
@@ -97,6 +99,35 @@ Usage example:
         except Exception as e:
             print("⚠️ Unexpected error:", e)
 
+def perform(self, operation_name, a, b):
+        try:
+            validate_numbers(a, b)
+            valid_ops = [
+                "add", "subtract", "multiply", "divide", "power", "root",
+                "modulus", "int_divide", "percent", "abs_diff"
+            ]
+            validate_operation_name(operation_name, valid_ops)
+
+            self.caretaker.save_state(self.history.get_all())
+
+            operation = self.factory.create_operation(operation_name)
+            result = operation.execute(a, b)
+
+            calc = Calculation(operation_name, a, b, result)
+            self.history.add(calc)
+
+            print(f"✅ {operation_name}({a}, {b}) = {result}")
+            return result
+
+        except ValidationError as e:
+            print(f"⚠️  Input Error: {e}")
+        except ZeroDivisionError:
+            print("❌ Error: Division by zero is not allowed.")
+        except CalculatorError as e:
+            print(f"⚠️  Calculator Error: {e}")
+        except Exception as e:
+            print(f"⚠️  Unexpected Error: {e}")
+    
 
 if __name__ == "__main__":
     main_repl()
