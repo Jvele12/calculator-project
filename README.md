@@ -25,8 +25,8 @@ Copy code
 - 🏭 **Factory Pattern** – dynamic operation creation  
 - 🔁 **Memento Pattern** – supports `undo` / `redo`  
 - 👁️ **Observer Pattern** – automatic logging and auto-save  
-- ⚙️ **Strategy Pattern** – interchangeable operation logic  
-- (Optional) **Facade Pattern** – simplified interface through `Calculator`
+- ⚙️ **Strategy Pattern** – interchangeable operation logic
+- 🌈 **Coloroma**
 - **Persistent History**
 - Automatically saves to CSV using **pandas**  
 - Undo and redo supported through Memento design
@@ -45,21 +45,20 @@ Copy code
 
 1. **Clone the repository**
  ```bash
- git clone https://github.com/Jvele12/calculator-advanced.git
- cd calculator-advanced
+ git clone https://github.com/Jvele12/calculator-project.git
+ cd calculator-project
 Create & activate a virtual environment
 
 bash
 Copy code
 python -m venv venv
 venv\Scripts\activate       # Windows
-source venv/bin/activate    # macOS / Linux
 Install dependencies
 
 bash
 Copy code
 pip install -r requirements.txt
-Create a .env file (in the project root):
+Create a .env file:
 
 env
 Copy code
@@ -92,9 +91,8 @@ Welcome to the Advanced Calculator! Type 'help' for commands.
 ↪️  Redid last undone operation.
 >> exit
 👋 Goodbye!
-🧩 Project Structure
-markdown
-Copy code
+
+🧩 Structure
 project_root/
 ├── app/
 │   ├── calculator.py
