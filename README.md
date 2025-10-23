@@ -44,7 +44,7 @@ Copy code
 ## 🛠️ Installation & Setup
 
 1. **Clone the repository**
-2. 
+```
  git clone https://github.com/Jvele12/calculator-project.git
  cd calculator-project
 Create & activate a virtual environment
