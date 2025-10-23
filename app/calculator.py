@@ -33,7 +33,7 @@ class Calculator:
             return result
 
         except ValidationError as e:
-            print(f"⚠️ Input Error: {e}")
+            print(f"⚠️ Error performing operation: {e}")
         except ZeroDivisionError:
             print("❌ Error: Division by zero is not allowed.")
         except CalculatorError as e:

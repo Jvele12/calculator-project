@@ -2,6 +2,8 @@ import os
 import pandas as pd
 from app.history import HistoryManager
 from app.calculation import Calculation
+from app.history import HistoryManager
+from app.calculator_config import HISTORY_DIR
 
 
 def test_add_and_save(tmp_path, monkeypatch):
@@ -55,3 +57,17 @@ def test_observer_trigger(monkeypatch, tmp_path):
     hist.add(calc)
 
     assert triggered["notified"] is True
+
+def test_history_load_failure(monkeypatch, tmp_path):
+    bad_file = tmp_path / "bad.csv"
+    bad_file.write_text("corrupt,data\nnot,valid")
+    monkeypatch.setattr("app.calculator_config.HISTORY_DIR", str(tmp_path))
+    hist = HistoryManager() 
+    assert isinstance(hist.get_all(), list)
+
+def test_history_load_corrupted_csv(tmp_path, monkeypatch):
+    bad_file = tmp_path / "calculator_history.csv"
+    bad_file.write_text("not,a,valid,csv") 
+    monkeypatch.setattr("app.calculator_config.HISTORY_DIR", str(tmp_path))
+    hist = HistoryManager()
+    assert isinstance(hist.get_all(), list)

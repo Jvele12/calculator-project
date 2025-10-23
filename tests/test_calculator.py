@@ -1,5 +1,6 @@
 import pytest
 from app.calculator import Calculator, main_repl
+from app.calculator import main_repl
 
 
 # -------------------------
@@ -47,3 +48,32 @@ def test_repl_help_and_exit(monkeypatch, capsys):
     out = capsys.readouterr().out
     assert "Available operations" in out
     assert "Goodbye" in out
+
+def test_repl_exit(monkeypatch, capsys):
+    inputs = iter(["exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    main_repl()
+    out = capsys.readouterr().out
+    assert "Goodbye" in out
+
+def test_repl_invalid_format(monkeypatch, capsys):
+    from app.calculator import main_repl
+    inputs = iter(["add 5", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    main_repl()
+    out = capsys.readouterr().out
+    assert "Invalid format" in out
+
+def test_repl_invalid_command(monkeypatch, capsys):
+    inputs = iter(["unknown 1 2", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    main_repl()
+    out = capsys.readouterr().out
+    assert "Unsupported" in out or "Error" in out
+
+def test_repl_help_command(monkeypatch, capsys):
+    inputs = iter(["help", "exit"])
+    monkeypatch.setattr("builtins.input", lambda _: next(inputs))
+    main_repl()
+    out = capsys.readouterr().out
+    assert "Available operations" in out or "help" in out.lower()

@@ -1,41 +1,21 @@
-from app.operations import Add, Subtract, Multiply, Divide, Power, Root
+from app.operation_factory import OperationFactory
 
 class Calculation:
-    def __init__(self, a, b, operation_name, result):
+    def __init__(self, operation, a, b, result):
+        self.operation = operation
         self.a = a
         self.b = b
-        self.operation_name = operation_name
         self.result = result
 
-    def __str__(self):
-        return f"{self.a} {self.operation_name} {self.b} = {self.result}"
-
+    def __repr__(self):
+        return f"Calculation({self.operation}, {self.a}, {self.b}) = {self.result}"
 
 class CalculationFactory:
     @staticmethod
-    def create(operation, a, b):
-        operations = {
-            '+': Add(),
-            'add': Add(),
-            '-': Subtract(),
-            'subtract': Subtract(),
-            '*': Multiply(),
-            'multiply': Multiply(),
-            '/': Divide(),
-            'divide': Divide(),
-            '^': Power(),
-            'power': Power(),
-            'root': Root()
-    }   
-
-        if operation not in operations:
-            raise ValueError(f"Invalid operation: {operation}")
-
-        operation_obj = operations[operation]
+    def create(operation_name, a, b):
+        operation = OperationFactory.create_operation(operation_name)
         try:
-            result = operation_obj.execute(a, b)
+            result = operation.execute(a, b)
         except ZeroDivisionError:
-            result = "Error: Division by zero"
-
-        return Calculation(a, b, operation, result)
-
+            raise ZeroDivisionError("Division by zero is not allowed.")
+        return Calculation(operation_name, a, b, result)
