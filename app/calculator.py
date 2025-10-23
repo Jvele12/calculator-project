@@ -12,13 +12,13 @@ class Calculator:
 
     def perform(self, operation_name, a, b):
         try:
+            self.caretaker.save_state(self.history.get_all())
+
             operation = self.factory.create_operation(operation_name)
             result = operation.execute(a, b)
 
             calc = Calculation(operation_name, a, b, result)
             self.history.add(calc)
-
-            self.caretaker.save_state(self.history)
 
             print(f"✅ {operation_name}({a}, {b}) = {result}")
             return result
@@ -27,25 +27,56 @@ class Calculator:
             print(f"❌ Error performing operation '{operation_name}': {e}")
             return None
 
+    def undo(self):
+        prev_state = self.caretaker.undo()
+        if prev_state is not None:
+            self.history.restore(prev_state)
+            print("↩️  Undid last operation.")
+        else:
+            print("⚠️  Nothing to undo.")
+
+    def redo(self):
+        next_state = self.caretaker.redo()
+        if next_state is not None:
+            self.history.restore(next_state)
+            print("↪️  Redid last undone operation.")
+        else:
+            print("⚠️  Nothing to redo.")
+
 
 def main_repl():
     calc = Calculator()
     print("Welcome to the Advanced Calculator! Type 'help' for commands, or 'exit' to quit.\n")
 
     while True:
-        user_input = input(">> ").strip()
+        user_input = input(">> ").strip().lower()
 
-        if user_input.lower() == "exit":
+        if not user_input:
+            continue
+
+        if user_input == "exit":
             print("👋 Goodbye!")
             break
 
-        elif user_input.lower() == "help":
-            print("Available operations: add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff")
-            print("Usage: <operation> <a> <b>")
-            print("Example: power 2 3\n")
+        elif user_input == "help":
+            print("""
+Available operations:
+  add, subtract, multiply, divide, power, root, modulus, int_divide, percent, abs_diff
+Commands:
+  undo   → undo last operation
+  redo   → redo last undone operation
+  exit   → exit program
+Usage example:
+  add 2 3
+""")
             continue
 
-        elif not user_input:
+        elif user_input == "undo":
+            calc.undo()
+            continue
+
+        elif user_input == "redo":
+            calc.redo()
             continue
 
         try:
@@ -66,9 +97,6 @@ def main_repl():
         except Exception as e:
             print("⚠️ Unexpected error:", e)
 
-class CalculationFactory:
-    @staticmethod
-    def create(operation_name, a, b):
-        operation = OperationFactory.create_operation(operation_name)
-        result = operation.execute(a, b)
-        return Calculation(operation_name, a, b, result)
+
+if __name__ == "__main__":
+    main_repl()
