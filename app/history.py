@@ -10,12 +10,10 @@ class HistoryManager:
         self._history = []
         self._observers = []
 
-        # ✅ Use env var or monkeypatched test directory
         current_history_dir = os.getenv("HISTORY_DIR", HISTORY_DIR)
         os.makedirs(current_history_dir, exist_ok=True)
         self.history_file = os.path.join(current_history_dir, "calculator_history.csv")
 
-        # ✅ Reset if running in pytest temp dir
         if "pytest" in current_history_dir or "tmp" in current_history_dir:
             self._history = []
         elif os.path.exists(self.history_file):
@@ -28,7 +26,6 @@ class HistoryManager:
         else:
             self._history = []
 
-        # ✅ Attach observers
         self.attach_observer(LoggingObserver())
         self.attach_observer(AutoSaveObserver(self))
 
@@ -46,7 +43,6 @@ class HistoryManager:
             "Result": calculation.result,
             "Timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }
-        # Avoid duplicates
         if not self._history or record != self._history[-1]:
             self._history.append(record)
 
@@ -60,7 +56,6 @@ class HistoryManager:
         self.save()
 
     def save(self):
-        # ✅ Always write to the correct path (respects tmp_path)
         df = pd.DataFrame(self._history)
         os.makedirs(os.path.dirname(self.history_file), exist_ok=True)
         df.to_csv(self.history_file, index=False)

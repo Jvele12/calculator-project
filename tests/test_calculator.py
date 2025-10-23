@@ -2,10 +2,6 @@ import pytest
 from app.calculator import Calculator, main_repl
 from app.calculator import main_repl
 
-
-# -------------------------
-# 1️⃣  Direct calculator logic
-# -------------------------
 def test_basic_addition():
     calc = Calculator()
     result = calc.perform("add", 2, 3)
@@ -19,10 +15,6 @@ def test_invalid_operation(capsys):
     out = capsys.readouterr().out
     assert "Error performing" in out
 
-
-# -------------------------
-# 2️⃣  REPL integration tests
-# -------------------------
 def test_repl_basic_flow(monkeypatch, capsys):
     inputs = iter([
         "add 2 3",

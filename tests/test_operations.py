@@ -4,10 +4,6 @@ from app.operations import (
     Modulus, IntDivide, Percent, AbsDiff, OperationStrategy
 )
 
-
-# -------------------------
-#  Basic arithmetic operations
-# -------------------------
 @pytest.mark.parametrize("a, b, expected", [
     (2, 3, 5),
     (-1, 1, 0),
@@ -44,10 +40,6 @@ def test_divide_by_zero():
     with pytest.raises(ZeroDivisionError):
         Divide().execute(5, 0)
 
-
-# -------------------------
-#  Advanced math operations
-# -------------------------
 @pytest.mark.parametrize("a, b, expected", [
     (2, 3, 8),
     (5, 0, 1),
@@ -100,10 +92,6 @@ def test_percent(a, b, expected):
 def test_abs_diff(a, b, expected):
     assert AbsDiff().execute(a, b) == expected
 
-
-# -------------------------
-#  Base class & edge checks
-# -------------------------
 def test_operation_strategy_not_implemented():
     op = OperationStrategy()
     with pytest.raises(NotImplementedError):
