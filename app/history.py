@@ -75,3 +75,5 @@ class HistoryManager:
     def clear(self):
         self._history = []
         self.save()
+
+
